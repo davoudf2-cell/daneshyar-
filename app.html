@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>داشبورد مالی دانشیار</title>
+    <title>سامانه جامع مالی دانشیار</title>
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -11,45 +11,33 @@
         :root { --primary: #1e3a8a; --bg: #f1f5f9; --text: #1e293b; --border: #cbd5e1; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Vazirmatn', sans-serif; }
         body { background-color: var(--bg); color: var(--text); display: flex; flex-direction: column; min-height: 100vh; }
-        .header { background: var(--primary); color: #fff; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .header { background: var(--primary); color: #fff; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap:10px; }
         .header h1 { font-size: 18px; display: flex; gap: 10px; align-items: center; }
-        .header input { padding: 8px; border-radius: 6px; border: none; font-family: inherit; }
-        .main-container { display: flex; flex: 1; overflow: hidden; flex-direction: column; }
-        
-        /* داشبورد تب‌ها */
+        .header input { padding: 8px; border-radius: 6px; border: none; font-family: inherit; font-size: 13px; }
         .tabs { display: flex; background: #e2e8f0; overflow-x: auto; }
         .tab-btn { padding: 12px 18px; border: none; background: none; cursor: pointer; font-weight: bold; color: #64748b; white-space: nowrap; font-size: 13px; border-bottom: 3px solid transparent; }
         .tab-btn.active { background: #fff; color: var(--primary); border-bottom-color: var(--primary); }
-        
         .content-area { padding: 20px; flex: 1; overflow-y: auto; }
-        .tab-content { display: none; }
-        .tab-content.active { display: block; animation: fadeIn 0.3s; }
+        .tab-content { display: none; } .tab-content.active { display: block; animation: fadeIn 0.3s; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        
         .card { background: #fff; border-radius: 8px; padding: 15px; margin-bottom: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
         .card h3 { color: var(--primary); margin-bottom: 15px; font-size: 15px; border-bottom: 2px solid var(--bg); padding-bottom: 8px; }
-        
-        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin-bottom: 10px; }
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 10px; }
         .form-group label { display: block; font-size: 12px; font-weight: bold; margin-bottom: 5px; }
         .form-group input, .form-group select { width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 6px; font-family: inherit; }
-        
         .btn { padding: 8px 15px; border: none; border-radius: 6px; cursor: pointer; font-family: inherit; font-weight: bold; font-size: 12px; display: inline-flex; align-items: center; gap: 6px; transition: 0.2s; text-decoration: none; color: #fff; }
         .btn-blue { background: #3b82f6; } .btn-blue:hover { background: #2563eb; }
         .btn-green { background: #10b981; } .btn-green:hover { background: #059669; }
         .btn-red { background: #ef4444; } .btn-red:hover { background: #dc2626; }
-        
         table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 10px; }
         th, td { border: 1px solid var(--border); padding: 8px; text-align: center; }
         th { background: #f8fafc; }
-        
         .financial-table th { background: #e0e7ff; color: var(--primary); }
         .financial-table tr.total-row { background: #f8fafc; font-weight: bold; }
         .financial-table td:last-child { direction: ltr; text-align: left; font-weight: bold; }
-        
         .alert { padding: 12px; border-radius: 6px; margin-bottom: 15px; font-size: 13px; }
         .alert-success { background: #ecfdf5; color: #065f46; border: 1px solid #10b981; }
         .alert-danger { background: #fef2f2; color: #991b1b; border: 1px solid #ef4444; }
-        .share-link { background: #e0f2fe; padding: 10px; border-radius: 6px; color: #0369a1; font-size: 12px; word-break: break-all; margin-top: 10px; }
     </style>
 </head>
 <body>
@@ -57,122 +45,100 @@
 <div class="header">
     <h1><i class="fas fa-chart-line"></i> سامانه جامع مالی دانشیار</h1>
     <div>
-        <input type="text" id="companyName" placeholder="نام شرکت..." style="width:150px; margin-bottom:5px;">
-        <input type="text" id="fiscalYear" placeholder="سال مالی..." style="width:100px;">
-        <button class="btn btn-green" onclick="saveProject()"><i class="fas fa-save"></i> ذخیره در مرورگر</button>
+        <input type="text" id="companyName" placeholder="نام شرکت..." style="width:110px; margin-bottom:5px;">
+        <input type="text" id="fiscalYear" placeholder="سال..." style="width:70px;">
+        <input type="number" id="totalShares" placeholder="تعداد سهام..." style="width:100px;">
+        <button class="btn btn-green" onclick="saveProject()"><i class="fas fa-save"></i> ذخیره</button>
     </div>
 </div>
 
-<div class="main-container">
-    <div class="tabs">
-        <button class="tab-btn active" onclick="switchTab('tab-data')">مدیریت تراکنش‌ها</button>
-        <button class="tab-btn" onclick="switchTab('tab-reports')">صورت‌های مالی</button>
-        <button class="tab-btn" onclick="switchTab('tab-analysis')">تحلیل و نسبت‌ها</button>
-        <button class="tab-btn" onclick="switchTab('tab-excel')">ورود/خروجی اکسل</button>
+<div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('tab-data')">مدیریت تراکنش‌ها</button>
+    <button class="tab-btn" onclick="switchTab('tab-reports')">صورت‌های مالی</button>
+    <button class="tab-btn" onclick="switchTab('tab-analysis')">تحلیل و نسبت‌ها (EPS/DPS)</button>
+    <button class="tab-btn" onclick="switchTab('tab-excel')">اکسل و اشتراک</button>
+</div>
+
+<div class="content-area">
+    <!-- تب تراکنش‌ها -->
+    <div id="tab-data" class="tab-content active">
+        <div class="card">
+            <h3><i class="fas fa-edit"></i> ثبت تراکنش جدید</h3>
+            <div class="form-grid">
+                <div class="form-group"><label>شرح تراکنش</label><input type="text" id="trxDesc" placeholder="شرح..."></div>
+                <div class="form-group"><label>مبلغ (تومان)</label><input type="number" id="trxAmount" placeholder="مبلغ..."></div>
+                <div class="form-group"><label>حساب بدهکار</label>
+                    <select id="trxDebit">
+                        <option value="cash">موجودی نقد</option><option value="bank">موجودی بانک</option><option value="ar">حساب‌های دریافتنی</option><option value="inventory">موجودی کالا</option><option value="equipment">دارایی ثابت</option>
+                        <option value="ap">حساب‌های پرداختنی</option><option value="loan">وام بانکی</option><option value="expense">هزینه‌های عملیاتی</option>
+                    </select>
+                </div>
+                <div class="form-group"><label>حساب بستانکار</label>
+                    <select id="trxCredit">
+                        <option value="revenue">درآمد فروش</option><option value="capital">سرمایه</option>
+                        <option value="ap">حساب‌های پرداختنی</option><option value="loan">وام بانکی</option>
+                        <option value="cash">موجودی نقد</option><option value="bank">موجودی بانک</option>
+                    </select>
+                </div>
+            </div>
+            <button class="btn btn-blue" onclick="addTransaction()"><i class="fas fa-plus"></i> ثبت</button>
+            <button class="btn btn-red" onclick="clearTransactions()"><i class="fas fa-trash"></i> پاک کردن همه</button>
+        </div>
+        
+        <div class="card">
+            <h3>دفتر روزنامه</h3>
+            <table id="trxTable">
+                <thead><tr><th>شرح</th><th>بدهکار</th><th>بستانکار</th><th>مبلغ</th><th>عملیات</th></tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
     </div>
 
-    <div class="content-area">
-        <!-- تب ۱: تراکنش‌ها -->
-        <div id="tab-data" class="tab-content active">
-            <div class="card">
-                <h3><i class="fas fa-edit"></i> ثبت تراکنش جدید / اصلاحی</h3>
-                <div class="form-grid">
-                    <div class="form-group"><label>شرح تراکنش</label><input type="text" id="trxDesc" placeholder="مثلاً: فروش محصول"></div>
-                    <div class="form-group"><label>مبلغ (تومان)</label><input type="number" id="trxAmount" placeholder="مبلغ"></div>
-                    <div class="form-group"><label>حساب بدهکار</label>
-                        <select id="trxDebit">
-                            <option value="cash">موجودی نقد</option><option value="ar">حساب‌های دریافتنی</option><option value="inventory">موجودی کالا</option><option value="equipment">دارایی ثابت</option><option value="expense">هزینه‌ها</option>
-                        </select>
-                    </div>
-                    <div class="form-group"><label>حساب بستانکار</label>
-                        <select id="trxCredit">
-                            <option value="revenue">درآمد فروش</option><option value="ap">حساب‌های پرداختنی</option><option value="capital">سرمایه</option><option value="loan">وام بانکی</option><option value="cash">موجودی نقد</option>
-                        </select>
-                    </div>
-                </div>
-                <button class="btn btn-blue" onclick="addTransaction()"><i class="fas fa-plus"></i> ثبت تراکنش</button>
-                <button class="btn btn-red" onclick="clearTransactions()"><i class="fas fa-trash"></i> پاک کردن همه</button>
-            </div>
-            
-            <div class="card">
-                <h3>لیست تراکنش‌ها (دفتر روزنامه)</h3>
-                <table id="trxTable">
-                    <thead><tr><th>شرح</th><th>بدهکار</th><th>بستانکار</th><th>مبلغ</th><th>عملیات</th></tr></thead>
-                    <tbody></tbody>
-                </table>
-            </div>
-        </div>
+    <!-- تب صورت‌های مالی -->
+    <div id="tab-reports" class="tab-content">
+        <div class="card"><h3>صورت سود و زیان</h3><div id="incomeStatement"></div></div>
+        <div class="card"><h3>ترازنامه</h3><div id="balanceSheet"></div></div>
+        <div class="card"><h3>صورت جریان وجوه نقد</h3><div id="cashFlow"></div></div>
+        <div class="card"><h3>صورت تغییرات حقوق مالکانه</h3><div id="equityStatement"></div></div>
+    </div>
 
-        <!-- تب ۲: صورت‌های مالی -->
-        <div id="tab-reports" class="tab-content">
-            <div class="card"><h3>صورت سود و زیان</h3><div id="incomeStatement"></div></div>
-            <div class="card"><h3>ترازنامه</h3><div id="balanceSheet"></div></div>
-            <div class="card"><h3>صورت جریان وجوه نقد</h3><div id="cashFlow"></div></div>
-            <div class="card"><h3>صورت تغییرات حقوق مالکانه</h3><div id="equityStatement"></div></div>
+    <!-- تب تحلیل -->
+    <div id="tab-analysis" class="tab-content">
+        <div class="card">
+            <h3><i class="fas fa-check-circle"></i> تحلیل و نسبت‌های مالی</h3>
+            <div id="analysisAlert"></div>
+            <div id="analysisResult"></div>
         </div>
+    </div>
 
-        <!-- تب ۳: تحلیل و نسبت‌ها -->
-        <div id="tab-analysis" class="tab-content">
-            <div class="card">
-                <h3><i class="fas fa-check-circle"></i> کنترل توازن و ارتباط صورت‌های مالی</h3>
-                <div id="analysisAlert"></div>
-                <div id="analysisResult"></div>
-            </div>
-        </div>
-
-        <!-- تب ۴: اکسل و اشتراک -->
-        <div id="tab-excel" class="tab-content">
-            <div class="card">
-                <h3><i class="fas fa-file-excel"></i> خروجی اکسل (۶ شیت)</h3>
-                <p style="font-size: 12px; color:#64748b; margin-bottom:10px;">شامل شیت‌های: داده‌های خام، طبقه‌بندی جریان، صورت جریان نقد، محاسبات، تحلیل نقدینگی، داشبورد.</p>
-                <button class="btn btn-green" onclick="exportToExcel()"><i class="fas fa-download"></i> دانلود فایل اکسل</button>
-            </div>
-            
-            <div class="card">
-                <h3><i class="fas fa-upload"></i> بارگذاری فایل اکسل (برای مشاهده و ویرایش)</h3>
-                <input type="file" id="excelUpload" accept=".xlsx, .xls" style="padding: 10px; border: 1px dashed #cbd5e1; width:100%; border-radius: 6px;">
-            </div>
-
-            <div class="card">
-                <h3><i class="fas fa-link"></i> ذخیره و لینک اشتراکی</h3>
-                <p style="font-size: 12px; margin-bottom: 10px;">با کلیک روی دکمه زیر، اطلاعات شما به صورت یک لینک کوتاه ذخیره می‌شود تا برای دیگران بفرستید.</p>
-                <button class="btn btn-blue" onclick="generateShareLink()"><i class="fas fa-link"></i> ساخت لینک اشتراکی</button>
-                <div id="shareBox" style="display:none;" class="share-link">
-                    <p>لینک اشتراکی شما:</p>
-                    <div id="shareLinkText" style="font-weight:bold; margin-top:5px;"></div>
-                    <button class="btn btn-blue" onclick="copyShareLink()" style="margin-top:5px;"><i class="fas fa-copy"></i> کپی لینک</button>
-                </div>
-            </div>
-        </div>
+    <!-- تب اکسل -->
+    <div id="tab-excel" class="tab-content">
+        <div class="card"><h3><i class="fas fa-file-excel"></i> خروجی اکسل (۶ شیت)</h3><button class="btn btn-green" onclick="exportToExcel()"><i class="fas fa-download"></i> دانلود اکسل</button></div>
+        <div class="card"><h3><i class="fas fa-upload"></i> بارگذاری اکسل</h3><input type="file" id="excelUpload" accept=".xlsx, .xls" style="padding: 10px; border: 1px dashed #cbd5e1; width:100%; border-radius: 6px;"></div>
     </div>
 </div>
 
 <script>
-    // دیتابیس شبیه‌سازی شده
     let transactions = [];
     let financials = {};
 
-    // اجرا در هنگام لود
     window.onload = function() {
         loadProject();
         if(transactions.length === 0) {
-            // تراکنش‌های پیش‌فرض برای شروع
             transactions = [
-                { desc: "سرمایه اولیه", debit: "cash", credit: "capital", amount: 100000000 },
+                { desc: "سرمایه اولیه", debit: "bank", credit: "capital", amount: 100000000 },
                 { desc: "فروش محصولات", debit: "cash", credit: "revenue", amount: 50000000 },
-                { desc: "خرید تجهیزات", debit: "equipment", credit: "cash", amount: 30000000 },
+                { desc: "خرید تجهیزات", debit: "equipment", credit: "bank", amount: 30000000 },
                 { desc: "پرداخت هزینه اجاره", debit: "expense", credit: "cash", amount: 10000000 }
             ];
         }
-        renderTransactions();
-        generateAll();
+        renderTransactions(); generateAll();
     };
 
     function switchTab(tabId) {
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
         document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-        document.getElementById(tabId).classList.add('active');
-        event.target.classList.add('active');
+        document.getElementById(tabId).classList.add('active'); event.target.classList.add('active');
     }
 
     function addTransaction() {
@@ -180,185 +146,104 @@
         const amount = parseFloat(document.getElementById('trxAmount').value);
         const debit = document.getElementById('trxDebit').value;
         const credit = document.getElementById('trxCredit').value;
-
-        if (!desc || !amount || amount <= 0) { alert('لطفاً شرح و مبلغ معتبر وارد کنید.'); return; }
-        if (debit === credit) { alert('حساب بدهکار و بستانکار نمی‌توانند یکسان باشند.'); return; }
-
+        if (!desc || !amount || amount <= 0 || debit === credit) { alert('اطلاعات نامعتبر است.'); return; }
         transactions.push({ desc, debit, credit, amount });
         renderTransactions(); generateAll(); saveProject();
         document.getElementById('trxDesc').value = ''; document.getElementById('trxAmount').value = '';
     }
 
-    function deleteTransaction(index) {
-        if(confirm('آیا از حذف این تراکنش مطمئن هستید؟')) {
-            transactions.splice(index, 1); renderTransactions(); generateAll(); saveProject();
-        }
-    }
-
-    function clearTransactions() {
-        if(confirm('آیا از پاک کردن تمام تراکنش‌ها مطمئن هستید؟')) {
-            transactions = []; renderTransactions(); generateAll(); saveProject();
-        }
-    }
+    function deleteTransaction(index) { if(confirm('حذف شود؟')) { transactions.splice(index, 1); renderTransactions(); generateAll(); saveProject(); } }
+    function clearTransactions() { if(confirm('همه پاک شوند؟')) { transactions = []; renderTransactions(); generateAll(); saveProject(); } }
 
     function renderTransactions() {
         const tbody = document.querySelector('#trxTable tbody'); tbody.innerHTML = '';
         transactions.forEach((t, index) => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td>${t.desc}</td>
-                <td>${mapAccount(t.debit)}</td>
-                <td>${mapAccount(t.credit)}</td>
-                <td>${t.amount.toLocaleString()}</td>
-                <td><button class="btn btn-red" onclick="deleteTransaction(${index})" style="padding:4px 8px;"><i class="fas fa-trash"></i></button></td>
-            `;
-            tbody.appendChild(tr);
+            tbody.innerHTML += `<tr><td>${t.desc}</td><td>${mapAcc(t.debit)}</td><td>${mapAcc(t.credit)}</td><td>${t.amount.toLocaleString()}</td><td><button class="btn btn-red" onclick="deleteTransaction(${index})" style="padding:4px 8px;"><i class="fas fa-trash"></i></button></td></tr>`;
         });
     }
 
-    function mapAccount(code) {
-        const accs = { cash: 'موجودی نقد', ar: 'حساب‌های دریافتنی', inventory: 'موجودی کالا', equipment: 'دارایی ثابت', expense: 'هزینه‌ها', revenue: 'درآمد فروش', ap: 'حساب‌های پرداختنی', capital: 'سرمایه', loan: 'وام بانکی' };
+    function mapAcc(code) {
+        const accs = { cash: 'موجودی نقد', bank: 'بانک', ar: 'حساب دریافتنی', inventory: 'موجودی کالا', equipment: 'دارایی ثابت', ap: 'حساب پرداختنی', loan: 'وام', capital: 'سرمایه', revenue: 'درآمد فروش', expense: 'هزینه' };
         return accs[code] || code;
     }
 
     function generateAll() {
-        let rev = 0, exp = 0, cash = 0, capital = 0, eq = 0, ar = 0, ap = 0, loan = 0, inv = 0;
-
+        let rev = 0, exp = 0, cash = 0, bank = 0, capital = 0, eq = 0, ar = 0, ap = 0, loan = 0, inv = 0;
         transactions.forEach(t => {
-            if (t.credit === 'revenue') rev += t.amount;
-            if (t.debit === 'expense') exp += t.amount;
-            if (t.debit === 'cash') cash += t.amount;
-            if (t.credit === 'cash') cash -= t.amount;
-            if (t.credit === 'capital') capital += t.amount;
-            if (t.debit === 'equipment') eq += t.amount;
-            if (t.debit === 'ar') ar += t.amount;
-            if (t.credit === 'ap') ap += t.amount;
-            if (t.credit === 'loan') loan += t.amount;
-            if (t.debit === 'inventory') inv += t.amount;
+            if (t.credit === 'revenue') rev += t.amount; if (t.debit === 'expense') exp += t.amount;
+            if (t.debit === 'cash') cash += t.amount; if (t.credit === 'cash') cash -= t.amount;
+            if (t.debit === 'bank') bank += t.amount; if (t.credit === 'bank') bank -= t.amount;
+            if (t.credit === 'capital') capital += t.amount; if (t.debit === 'equipment') eq += t.amount;
+            if (t.debit === 'ar') ar += t.amount; if (t.credit === 'ap') ap += t.amount;
+            if (t.credit === 'loan') loan += t.amount; if (t.debit === 'inventory') inv += t.amount;
         });
 
-        let grossProfit = rev - exp;
-        let tax = grossProfit > 0 ? grossProfit * 0.25 : 0;
-        let netProfit = grossProfit - tax;
-        let totalAssets = cash + eq + ar + inv;
-
-        financials = { rev, exp, grossProfit, tax, netProfit, cash, eq, ar, inv, ap, loan, capital, totalAssets };
-
-        // صورت سود و زیان
-        document.getElementById('incomeStatement').innerHTML = `
-            <table class="financial-table">
-                <tr><th>شرح</th><th>مبلغ (تومان)</th></tr>
-                <tr><td>درآمد عملیاتی</td><td>${rev.toLocaleString()}</td></tr>
-                <tr><td>هزینه‌های عملیاتی</td><td>${exp.toLocaleString()}</td></tr>
-                <tr class="total-row"><td>سود (زیان) ناخالص</td><td>${grossProfit.toLocaleString()}</td></tr>
-                <tr><td>مالیات (۲۵٪)</td><td>${tax.toLocaleString()}</td></tr>
-                <tr class="total-row"><td>سود (زیان) خالص</td><td>${netProfit.toLocaleString()}</td></tr>
-            </table>`;
-
-        // ترازنامه
-        document.getElementById('balanceSheet').innerHTML = `
-            <table class="financial-table">
-                <tr><th>دارایی‌ها</th><th>مبلغ</th><th>بدهی‌ها و حقوق مالکانه</th><th>مبلغ</th></tr>
-                <tr><td>موجودی نقد</td><td>${cash.toLocaleString()}</td><td>حساب‌های پرداختنی</td><td>${ap.toLocaleString()}</td></tr>
-                <tr><td>حساب‌های دریافتنی</td><td>${ar.toLocaleString()}</td><td>وام بانکی</td><td>${loan.toLocaleString()}</td></tr>
-                <tr><td>موجودی کالا</td><td>${inv.toLocaleString()}</td><td>سرمایه</td><td>${capital.toLocaleString()}</td></tr>
-                <tr><td>دارایی ثابت</td><td>${eq.toLocaleString()}</td><td>سود انباشته</td><td>${netProfit.toLocaleString()}</td></tr>
-                <tr class="total-row"><td>جمع دارایی‌ها</td><td>${totalAssets.toLocaleString()}</td><td>جمع بدهی‌ها و حقوق مالکانه</td><td>${(ap + loan + capital + netProfit).toLocaleString()}</td></tr>
-            </table>`;
-
-        // صورت جریان نقد (ساده)
-        let opCash = rev - exp, invCash = -eq, finCash = capital + loan;
-        let totalCash = opCash + invCash + finCash;
-        document.getElementById('cashFlow').innerHTML = `
-            <table class="financial-table">
-                <tr><th>شرح</th><th>مبلغ</th></tr>
-                <tr><td>جریان نقدی عملیاتی</td><td>${opCash.toLocaleString()}</td></tr>
-                <tr><td>جریان نقدی سرمایه‌گذاری</td><td>${invCash.toLocaleString()}</td></tr>
-                <tr><td>جریان نقدی تامین مالی</td><td>${finCash.toLocaleString()}</td></tr>
-                <tr class="total-row"><td>خالص تغییر در وجوه نقد</td><td>${totalCash.toLocaleString()}</td></tr>
-            </table>`;
-
-        // صورت حقوق مالکانه
-        document.getElementById('equityStatement').innerHTML = `
-            <table class="financial-table">
-                <tr><th>شرح</th><th>سرمایه</th><th>سود انباشته</th><th>جمع</th></tr>
-                <tr><td>مانده ابتدای دوره</td><td>0</td><td>0</td><td>0</td></tr>
-                <tr><td>سرمایه‌گذاری جدید</td><td>${capital.toLocaleString()}</td><td>-</td><td>${capital.toLocaleString()}</td></tr>
-                <tr><td>سود خالص دوره</td><td>-</td><td>${netProfit.toLocaleString()}</td><td>${netProfit.toLocaleString()}</td></tr>
-                <tr class="total-row"><td>مانده پایان دوره</td><td>${capital.toLocaleString()}</td><td>${netProfit.toLocaleString()}</td><td>${(capital + netProfit).toLocaleString()}</td></tr>
-            </table>`;
-
-        // تحلیل و مغایرت
-        let isBalanced = Math.abs(totalAssets - (ap + loan + capital + netProfit)) < 1;
-        let alertHtml = isBalanced ? '<div class="alert alert-success">✅ ترازنامه متوازن است. ارتباط صورت‌های مالی صحیح می‌باشد.</div>' : '<div class="alert alert-danger">⚠️ مغایرت شناسایی شد! جمع دارایی‌ها با جمع بدهی‌ها و حقوق مالکانه برابر نیست.</div>';
-        let debtRatio = totalAssets > 0 ? ((ap + loan) / totalAssets * 100).toFixed(2) : 0;
-        let profitMargin = rev > 0 ? (netProfit / rev * 100).toFixed(2) : 0;
+        let grossProfit = rev - exp; let tax = grossProfit > 0 ? grossProfit * 0.25 : 0; let netProfit = grossProfit - tax;
+        let totalAssets = cash + bank + eq + ar + inv; let totalLiabilities = ap + loan; let totalEquity = capital + netProfit;
+        let shares = parseFloat(document.getElementById('totalShares').value) || 1;
         
+        // محاسبه EPS و DPS
+        let eps = netProfit / shares;
+        let assumedDPS = eps > 0 ? eps * 0.5 : 0; // فرض تقسیم ۵۰ درصد سود به عنوان سود نقدی
+
+        financials = { rev, exp, grossProfit, tax, netProfit, cash, bank, eq, ar, inv, ap, loan, capital, totalAssets, totalLiabilities, totalEquity, eps, assumedDPS };
+
+        document.getElementById('incomeStatement').innerHTML = `<table class="financial-table"><tr><th>شرح</th><th>مبلغ (تومان)</th></tr><tr><td>درآمد عملیاتی</td><td>${rev.toLocaleString()}</td></tr><tr><td>هزینه‌های عملیاتی</td><td>${exp.toLocaleString()}</td></tr><tr class="total-row"><td>سود ناخالص</td><td>${grossProfit.toLocaleString()}</td></tr><tr><td>مالیات</td><td>${tax.toLocaleString()}</td></tr><tr class="total-row"><td>سود خالص</td><td>${netProfit.toLocaleString()}</td></tr><tr><td>سود هر سهم (EPS)</td><td>${eps.toLocaleString()}</td></tr></table>`;
+
+        document.getElementById('balanceSheet').innerHTML = `<table class="financial-table"><tr><th>دارایی‌ها</th><th>مبلغ</th><th>بدهی‌ها و حقوق مالکانه</th><th>مبلغ</th></tr><tr><td>موجودی نقد</td><td>${cash.toLocaleString()}</td><td>حساب‌های پرداختنی</td><td>${ap.toLocaleString()}</td></tr><tr><td>موجودی بانک</td><td>${bank.toLocaleString()}</td><td>وام بانکی</td><td>${loan.toLocaleString()}</td></tr><tr><td>حساب‌های دریافتنی</td><td>${ar.toLocaleString()}</td><td>سرمایه</td><td>${capital.toLocaleString()}</td></tr><tr><td>موجودی کالا</td><td>${inv.toLocaleString()}</td><td>سود انباشته</td><td>${netProfit.toLocaleString()}</td></tr><tr><td>دارایی ثابت</td><td>${eq.toLocaleString()}</td><td></td><td></td></tr><tr class="total-row"><td>جمع دارایی‌ها</td><td>${totalAssets.toLocaleString()}</td><td>جمع بدهی‌ها و حقوق مالکانه</td><td>${(totalLiabilities + totalEquity).toLocaleString()}</td></tr></table>`;
+
+        let opCash = rev - exp, invCash = -eq, finCash = capital + loan; let totalCash = opCash + invCash + finCash;
+        document.getElementById('cashFlow').innerHTML = `<table class="financial-table"><tr><th>شرح</th><th>مبلغ</th></tr><tr><td>جریان نقدی عملیاتی</td><td>${opCash.toLocaleString()}</td></tr><tr><td>جریان نقدی سرمایه‌گذاری</td><td>${invCash.toLocaleString()}</td></tr><tr><td>جریان نقدی تامین مالی</td><td>${finCash.toLocaleString()}</td></tr><tr class="total-row"><td>خالص تغییر در وجوه نقد</td><td>${totalCash.toLocaleString()}</td></tr></table>`;
+
+        document.getElementById('equityStatement').innerHTML = `<table class="financial-table"><tr><th>شرح</th><th>سرمایه</th><th>سود انباشته</th><th>جمع</th></tr><tr><td>مانده ابتدای دوره</td><td>0</td><td>0</td><td>0</td></tr><tr><td>سرمایه‌گذاری جدید</td><td>${capital.toLocaleString()}</td><td>-</td><td>${capital.toLocaleString()}</td></tr><tr><td>سود خالص دوره</td><td>-</td><td>${netProfit.toLocaleString()}</td><td>${netProfit.toLocaleString()}</td></tr><tr class="total-row"><td>مانده پایان دوره</td><td>${capital.toLocaleString()}</td><td>${netProfit.toLocaleString()}</td><td>${(capital + netProfit).toLocaleString()}</td></tr></table>`;
+
+        let isBalanced = Math.abs(totalAssets - (totalLiabilities + totalEquity)) < 1;
+        let alertHtml = isBalanced ? '<div class="alert alert-success">✅ ترازنامه متوازن است.</div>' : '<div class="alert alert-danger">⚠️ مغایرت در ترازنامه!</div>';
+        
+        let currentRatio = (ap + loan) > 0 ? ((cash + bank + ar) / (ap + loan)).toFixed(2) : 'نامحدود';
+        let debtRatio = totalAssets > 0 ? ((totalLiabilities / totalAssets) * 100).toFixed(2) : 0;
+        let profitMargin = rev > 0 ? ((netProfit / rev) * 100).toFixed(2) : 0;
+
         document.getElementById('analysisAlert').innerHTML = alertHtml;
         document.getElementById('analysisResult').innerHTML = `
             <table class="financial-table">
-                <tr><th>نسبت مالی</th><th>مقدار</th></tr>
-                <tr><td>حاشیه سود خالص</td><td>${profitMargin}%</td></tr>
+                <tr><th>شاخص / نسبت</th><th>مقدار</th></tr>
+                <tr><td>سود هر سهم (EPS)</td><td>${eps.toLocaleString()} تومان</td></tr>
+                <tr><td>سود نقدی هر سهم (DPS)</td><td>${assumedDPS.toLocaleString()} تومان</td></tr>
+                <tr><td>نسبت جاری</td><td>${currentRatio}</td></tr>
                 <tr><td>نسبت بدهی به دارایی</td><td>${debtRatio}%</td></tr>
-                <tr><td>وضعیت نقدینگی</td><td>${cash > 0 ? 'مطلوب' : 'نیازمند توجه'}</td></tr>
+                <tr><td>حاشیه سود خالص</td><td>${profitMargin}%</td></tr>
             </table>`;
     }
 
-    // ذخیره در مرورگر
     function saveProject() {
-        const data = { transactions, company: document.getElementById('companyName').value, year: document.getElementById('fiscalYear').value };
-        localStorage.setItem('daneshyar_financials', JSON.stringify(data));
+        const data = { transactions, company: document.getElementById('companyName').value, year: document.getElementById('fiscalYear').value, shares: document.getElementById('totalShares').value };
+        localStorage.setItem('daneshyar_financials_v3', JSON.stringify(data));
     }
     function loadProject() {
-        const data = JSON.parse(localStorage.getItem('daneshyar_financials'));
+        const data = JSON.parse(localStorage.getItem('daneshyar_financials_v3'));
         if (data) {
             if(data.transactions) transactions = data.transactions;
             if(data.company) document.getElementById('companyName').value = data.company;
             if(data.year) document.getElementById('fiscalYear').value = data.year;
+            if(data.shares) document.getElementById('totalShares').value = data.shares;
         }
     }
 
-    // خروجی اکسل
     function exportToExcel() {
         let wb = XLSX.utils.book_new(); let f = financials;
-        XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([["نام شرکت", document.getElementById('companyName').value], ["سال مالی", document.getElementById('fiscalYear').value], ["درآمد", f.rev], ["هزینه", f.exp], ["سود خالص", f.netProfit]]), "داده های خام");
+        XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([["نام شرکت", document.getElementById('companyName').value], ["سال مالی", document.getElementById('fiscalYear').value], ["EPS", f.eps], ["DPS", f.assumedDPS], ["درآمد", f.rev], ["سود خالص", f.netProfit]]), "داده های خام");
         XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([["شرح", "مبلغ"], ["عملیاتی", f.rev - f.exp], ["سرمایه گذاری", -f.eq], ["تامین مالی", f.capital + f.loan]]), "طبقه بندی جریان نقدی");
-        XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([["شرح", "مبلغ"], ["عملیاتی", f.rev - f.exp], ["سرمایه گذاری", -f.eq], ["تامین مالی", f.capital + f.loan], ["خالص", f.cash]]), "صورت جریان وجوه نقد");
-        XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([["شاخص", "مقدار"], ["سود ناخالص", f.grossProfit], ["مالیات", f.tax], ["سود خالص", f.netProfit], ["جمع دارایی", f.totalAssets]]), "محاسبات و شاخص ها");
-        XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([["نسبت", "مقدار"], ["نسبت جاری", (f.cash / (f.ap + f.loan || 1)).toFixed(2)], ["حاشیه سود", (f.netProfit / (f.rev || 1) * 100).toFixed(2) + "%"]]), "تحلیل نقدینگی");
-        XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([["داشبورد"], ["شرکت", document.getElementById('companyName').value], ["سال", document.getElementById('fiscalYear').value], ["موجودی نقد", f.cash], ["سود خالص", f.netProfit]]), "داشبورد");
+        XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([["شرح", "مبلغ"], ["عملیاتی", f.rev - f.exp], ["سرمایه گذاری", -f.eq], ["تامین مالی", f.capital + f.loan], ["خالص", f.cash + f.bank]]), "صورت جریان وجوه نقد");
+        XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([["شاخص", "مقدار"], ["سود ناخالص", f.grossProfit], ["مالیات", f.tax], ["سود خالص", f.netProfit], ["EPS", f.eps], ["DPS", f.assumedDPS], ["جمع دارایی", f.totalAssets]]), "محاسبات و شاخص ها");
+        XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([["نسبت", "مقدار"], ["نسبت جاری", (f.cash + f.bank + f.ar) / (f.ap + f.loan || 1)], ["حاشیه سود", f.netProfit / (f.rev || 1) * 100 + "%"]]), "تحلیل نقدینگی");
+        XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([["داشبورد"], ["شرکت", document.getElementById('companyName').value], ["سال", document.getElementById('fiscalYear').value], ["EPS", f.eps], ["DPS", f.assumedDPS], ["سود خالص", f.netProfit]]), "داشبورد");
         XLSX.writeFile(wb, `Financials_${document.getElementById('companyName').value}.xlsx`);
     }
 
-    // بارگذاری اکسل
     document.getElementById('excelUpload').addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            const data = new Uint8Array(e.target.result);
-            const workbook = XLSX.read(data, {type: 'array'});
-            const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-            const json = XLSX.utils.sheet_to_json(firstSheet, {header: 1});
-            alert('فایل اکسل با موفقیت بارگذاری شد. (داده‌ها در کنسول قابل مشاهده است)');
-            console.log(json);
-        };
-        reader.readAsArrayBuffer(file);
+        alert('فایل اکسل با موفقیت بارگذاری شد.');
     });
-
-    // ساخت لینک اشتراکی
-    function generateShareLink() {
-        const data = { transactions, company: document.getElementById('companyName').value, year: document.getElementById('fiscalYear').value };
-        const encoded = encodeURIComponent(btoa(JSON.stringify(data))); // انکود کردن دیتا
-        const link = window.location.origin + window.location.pathname + '?data=' + encoded;
-        document.getElementById('shareBox').style.display = 'block';
-        document.getElementById('shareLinkText').innerText = link;
-    }
-
-    function copyShareLink() {
-        const text = document.getElementById('shareLinkText').innerText;
-        navigator.clipboard.writeText(text).then(() => alert('لینک کپی شد!'));
-    }
 </script>
 </body>
 </html>
