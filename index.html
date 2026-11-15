@@ -547,31 +547,7 @@ financialData = { company, year, revenue, expenses, grossProfit, tax, netProfit,
             if (!financialData.company) {
                 alert('لطفاً ابتدا روی دکمه «تحلیل و تولید صورت‌های مالی» کلیک کنید.');
                 return;
-            }
-            let wb = XLSX.utils.book_new();
-            let f = financialData;
-
-            let ws1 = XLSX.utils.aoa_to_sheet([["نام شرکت", f.company], ["سال مالی", f.year], ["درآمد عملیاتی", f.revenue], ["هزینه عملیاتی", f.expenses]]);
-            XLSX.utils.book_append_sheet(wb, ws1, "داده های خام");
-
-            let ws2 = XLSX.utils.aoa_to_sheet([["شرح", "مبلغ"], ["جریان نقدی عملیاتی", f.netProfit + 100000000], ["جریان نقدی سرمایه‌گذاری", -200000000], ["جریان نقدی تامین مالی", 0]]);
-            XLSX.utils.book_append_sheet(wb, ws2, "طبقه بندی جریان نقدی");
-
-            let totalCashFlow = (f.netProfit + 100000000) - 200000000 + 0;
-            let ws3 = XLSX.utils.aoa_to_sheet([["شرح", "مبلغ"], ["جریان نقدی عملیاتی", f.netProfit + 100000000], ["جریان نقدی سرمایه‌گذاری", -200000000], ["جریان نقدی تامین مالی", 0], ["خالص تغییر در وجوه نقد", totalCashFlow]]);
-            XLSX.utils.book_append_sheet(wb, ws3, "صورت جریان وجوه نقد");
-
-            let ws4 = XLSX.utils.aoa_to_sheet([["شاخص", "مقدار"], ["سود ناخالص", f.grossProfit], ["سود خالص", f.netProfit], ["مالیات", f.tax], ["حاشیه سود خالص (%)", f.margin]]);
-            XLSX.utils.book_append_sheet(wb, ws4, "محاسبات و شاخص ها");
-
-            let ws5 = XLSX.utils.aoa_to_sheet([["نسبت", "مقدار"], ["نسبت هزینه به درآمد (%)", f.expRatio], ["نسبت سود به درآمد (%)", f.margin], ["وضعیت", f.netProfit > 0 ? "سودده" : "زیان‌ده"]]);
-            XLSX.utils.book_append_sheet(wb, ws5, "تحلیل نقدینگی");
-
-            let ws6 = XLSX.utils.aoa_to_sheet([["داشبورد مدیریتی"], ["شرکت", f.company], ["سال", f.year], ["کل درآمد", f.revenue], ["کل هزینه", f.expenses], ["سود خالص", f.netProfit], ["حاشیه سود", f.margin + "%"]]);
-            XLSX.utils.book_append_sheet(wb, ws6, "داشبورد");
-
-            XLSX.writeFile(wb, Financials_${f.company}_${f.year}.xlsx);
-        }
+           <script src="script.js"></script>
     </script>
 </body>
 </html>
