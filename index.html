@@ -734,7 +734,7 @@ resultBox.style.background = "#fef2f2";
                     <h2>آموزش، کلید موفقیت شماست</h2>
                     <p>با دوره‌های کاربردی و آموزش‌های قدم‌به‌قدم، مهارت‌های جدید بیاموزید و آینده بهتری بسازید.</p>
 
-داوود, [11/15/2026 5:14 PM]
+
 <a href="#" class="btn-primary">شروع یادگیری <i class="fas fa-play"></i></a>
                 </div>
             </div>
@@ -1160,5 +1160,252 @@ resultBox.style.background = "#fef2f2";
 </script>
         }, 5000);
     </script>
+
+<!-- ========================================== -->
+<!-- شروع اپلیکیشن حرفه‌ای حسابداری -->
+<!-- ========================================== -->
+<!-- افزودن کتابخانه ساخت اکسل -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+<style>
+    /* استایل دکمه باز کردن اپلیکیشن */
+    .app-btn-container { text-align: center; margin: 30px 0; }
+    .app-btn {
+        background: linear-gradient(135deg, #10b981, #059669);
+        color: white; padding: 15px 30px; border: none; border-radius: 50px;
+        font-size: 18px; font-weight: bold; cursor: pointer; font-family: 'Vazirmatn';
+        box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); transition: 0.3s;
+    }
+    .app-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(16, 185, 129, 0.5); }
+
+    /* استایل پنجره مدال (اپلیکیشن) */
+    .acc-modal {
+        display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.6); z-index: 1000; overflow-y: auto; padding: 20px;
+    }
+    .acc-modal-content {
+        background: #fff; max-width: 900px; margin: 20px auto; border-radius: 15px;
+        padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); position: relative;
+    }
+    .close-modal {
+        position: absolute; top: 15px; left: 15px; font-size: 24px; cursor: pointer; color: #ef4444;
+    }
+    .app-header { text-align: center; margin-bottom: 20px; border-bottom: 2px solid #f1f5f9; padding-bottom: 15px; }
+    .app-header h2 { color: #1e3a8a; margin-bottom: 5px; }
+    .app-header p { color: #64748b; font-size: 14px; }
+    
+    .input-row { display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; }
+    .input-group { flex: 1; min-width: 200px; }
+    .input-group label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 14px; }
+    .input-group input, .input-group select {
+        width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; font-family: 'Vazirmatn';
+    }
+
+    /* استایل جدول‌ها */
+    .data-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 13px; }
+    .data-table th, .data-table td { border: 1px solid #e2e8f0; padding: 10px; text-align: center; }
+    .data-table th { background: #f8fafc; color: #1e3a8a; }
+    .data-table tr:nth-child(even) { background: #f8fafc; }
+    
+    .action-btn {
+        background: #1a56db; color: white; border: none; padding: 12px 20px; border-radius: 8px;
+        cursor: pointer; font-family: 'Vazirmatn'; width: 100%; font-size: 16px; margin-top: 10px;
+    }
+    .action-btn:hover { background: #1e3a8a; }
+    .excel-btn { background: #10b981; margin-top: 20px; }
+    .excel-btn:hover { background: #059669; }
+
+    .analysis-box { background: #f0fdf4; border: 1px solid #86efac; padding: 15px; border-radius: 8px; margin-top: 15px; }
+    .analysis-box h4 { color: #166534; margin-bottom: 10px; }
+    .analysis-box p { font-size: 14px; margin-bottom: 5px; }
+</style>
+
+<!-- دکمه باز کردن اپلیکیشن (این را در بخش حسابداری قرار می‌دهیم) -->
+<div class="app-btn-container">
+    <button class="app-btn" onclick="openApp()">
+        <i class="fas fa-chart-line"></i> ورود به سامانه جامع مالی و تولید صورت‌ها
+    </button>
+</div>
+
+<!-- پنجره مدال اپلیکیشن -->
+<div id="accountingAppModal" class="acc-modal">
+    <div class="acc-modal-content">
+        <span class="close-modal" onclick="closeApp()">&times;</span>
+        <div class="app-header">
+            <h2>سامانه جامع مالی</h2>
+            <p>تولید صورت‌های مالی، تحلیل و خروجی اکسل</p>
+        </div>
+
+        <!-- فرم اطلاعات اولیه -->
+        <div class="input-row">
+            <div class="input-group">
+                <label>نام شرکت:</label>
+                <input type="text" id="companyName" value="شرکت نمونه دانشیار" placeholder="نام شرکت را وارد کنید">
+            </div>
+            <div class="input-group">
+                <label>سال مالی:</label>
+                <input type="text" id="fiscalYear" value="1403" placeholder="سال مالی">
+            </div>
+        </div>
+
+
+<div class="input-row">
+            <div class="input-group">
+                <label>درآمد عملیاتی (تومان):</label>
+                <input type="number" id="revenue" value="5000000000">
+            </div>
+            <div class="input-group">
+                <label>هزینه عملیاتی (تومان):</label>
+                <input type="number" id="expenses" value="3000000000">
+            </div>
+        </div>
+
+        <button class="action-btn" onclick="generateFinancials()">تحلیل و تولید صورت‌های مالی</button>
+
+        <!-- محل نمایش نتایج -->
+        <div id="resultsArea" style="display:none;">
+            <h3 style="color:#1e3a8a; margin: 20px 0 10px;">۱. صورت سود و زیان</h3>
+            <table class="data-table">
+                <tr><th>شرح</th><th>مبلغ (تومان)</th></tr>
+                <tr><td>درآمد عملیاتی</td><td id="resRevenue"></td></tr>
+                <tr><td>هزینه‌های عملیاتی</td><td id="resExpenses"></td></tr>
+                <tr><td style="font-weight:bold;">سود (زیان) ناخالص</td><td id="resGrossProfit" style="font-weight:bold;"></td></tr>
+                <tr><td>مالیات (۲۵٪)</td><td id="resTax"></td></tr>
+                <tr><td style="font-weight:bold; color:#10b981;">سود خالص</td><td id="resNetProfit" style="font-weight:bold; color:#10b981;"></td></tr>
+            </table>
+
+            <h3 style="color:#1e3a8a; margin: 20px 0 10px;">۲. نسبت‌های مالی و تحلیل</h3>
+            <div class="analysis-box">
+                <p><strong>حاشیه سود خالص:</strong> <span id="resMargin"></span>%</p>
+                <p><strong>نسبت هزینه به درآمد:</strong> <span id="resExpenseRatio"></span>%</p>
+                <p id="resStatus" style="margin-top:10px; font-weight:bold;"></p>
+            </div>
+
+            <button class="action-btn excel-btn" onclick="exportToExcel()">
+                <i class="fas fa-file-excel"></i> دانلود فایل اکسل جامع (۶ شیت)
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // متغیرهای جهانی برای ذخیره اطلاعات جهت خروجی اکسل
+    let financialData = {};
+
+    function openApp() { document.getElementById('accountingAppModal').style.display = 'block'; }
+    function closeApp() { document.getElementById('accountingAppModal').style.display = 'none'; }
+
+    function generateFinancials() {
+        let company = document.getElementById('companyName').value;
+        let year = document.getElementById('fiscalYear').value;
+        let revenue = parseFloat(document.getElementById('revenue').value) || 0;
+        let expenses = parseFloat(document.getElementById('expenses').value) || 0;
+
+        // محاسبات
+        let grossProfit = revenue - expenses;
+        let tax = grossProfit > 0 ? grossProfit * 0.25 : 0;
+        let netProfit = grossProfit - tax;
+        let margin = revenue > 0 ? (netProfit / revenue * 100).toFixed(2) : 0;
+        let expRatio = revenue > 0 ? (expenses / revenue * 100).toFixed(2) : 0;
+
+        // ذخیره برای اکسل
+        financialData = { company, year, revenue, expenses, grossProfit, tax, netProfit, margin, expRatio };
+
+        // نمایش در جدول
+        document.getElementById('resultsArea').style.display = 'block';
+        document.getElementById('resRevenue').innerText = revenue.toLocaleString();
+        document.getElementById('resExpenses').innerText = expenses.toLocaleString();
+        document.getElementById('resGrossProfit').innerText = grossProfit.toLocaleString();
+        document.getElementById('resTax').innerText = tax.toLocaleString();
+        document.getElementById('resNetProfit').innerText = netProfit.toLocaleString();
+        document.getElementById('resMargin').innerText = margin;
+        document.getElementById('resExpenseRatio').innerText = expRatio;
+        
+        let status = document.getElementById('resStatus');
+        if (netProfit > 0) {
+            status.innerHTML = "✅ وضعیت شرکت سودده است. ساختار مالی سالم ارزیابی می‌شود.";
+
+
+status.style.color = "#10b981";
+        } else {
+            status.innerHTML = "⚠️ هشدار: شرکت در این دوره زیان‌ده بوده و نیاز به بازنگری هزینه‌ها دارد.";
+            status.style.color = "#ef4444";
+        }
+    }
+
+    function exportToExcel() {
+        if (!financialData.company) {
+            alert('لطفاً ابتدا روی دکمه «تحلیل و تولید صورت‌های مالی» کلیک کنید.');
+            return;
+        }
+
+        let wb = XLSX.utils.book_new();
+        let f = financialData;
+
+        // 1. شیت داده‌های خام
+        let ws1 = XLSX.utils.aoa_to_sheet([
+            ["نام شرکت", f.company], ["سال مالی", f.year],
+            ["درآمد عملیاتی", f.revenue], ["هزینه عملیاتی", f.expenses]
+        ]);
+        XLSX.utils.book_append_sheet(wb, ws1, "داده های خام");
+
+        // 2. شیت طبقه‌بندی جریان‌های نقدی (فرضی)
+        let ws2 = XLSX.utils.aoa_to_sheet([
+            ["شرح", "مبلغ"],
+            ["جریان نقدی عملیاتی", f.netProfit + 100000000],
+            ["جریان نقدی سرمایه‌گذاری", -200000000],
+            ["جریان نقدی تامین مالی", 0]
+        ]);
+        XLSX.utils.book_append_sheet(wb, ws2, "طبقه بندی جریان نقدی");
+
+        // 3. شیت صورت جریان وجوه نقد
+        let totalCashFlow = (f.netProfit + 100000000) - 200000000 + 0;
+        let ws3 = XLSX.utils.aoa_to_sheet([
+            ["شرح", "مبلغ"],
+            ["جریان نقدی عملیاتی", f.netProfit + 100000000],
+            ["جریان نقدی سرمایه‌گذاری", -200000000],
+            ["جریان نقدی تامین مالی", 0],
+            ["خالص تغییر در وجوه نقد", totalCashFlow]
+        ]);
+        XLSX.utils.book_append_sheet(wb, ws3, "صورت جریان وجوه نقد");
+
+        // 4. شیت محاسبات و شاخص‌ها
+        let ws4 = XLSX.utils.aoa_to_sheet([
+            ["شاخص", "مقدار"],
+            ["سود ناخالص", f.grossProfit],
+            ["سود خالص", f.netProfit],
+            ["مالیات", f.tax],
+            ["حاشیه سود خالص (%)", f.margin]
+        ]);
+        XLSX.utils.book_append_sheet(wb, ws4, "محاسبات و شاخص ها");
+
+        // 5. شیت تحلیل نقدینگی
+        let ws5 = XLSX.utils.aoa_to_sheet([
+            ["نسبت", "مقدار"],
+            ["نسبت هزینه به درآمد (%)", f.expRatio],
+            ["نسبت سود به درآمد (%)", f.margin],
+            ["وضعیت", f.netProfit > 0 ? "سودده" : "زیان‌ده"]
+        ]);
+        XLSX.utils.book_append_sheet(wb, ws5, "تحلیل نقدینگی");
+
+        // 6. شیت داشبورد
+        let ws6 = XLSX.utils.aoa_to_sheet([
+            ["داشبورد مدیریتی"],
+            ["شرکت", f.company],
+            ["سال", f.year],
+            ["کل درآمد", f.revenue],
+            ["کل هزینه", f.expenses],
+            ["سود خالص", f.netProfit],
+            ["حاشیه سود", f.margin + "%"]
+        ]);
+        XLSX.utils.book_append_sheet(wb, ws6, "داشبورد");
+
+        // خروجی گرفتن
+        XLSX.writeFile(wb, Financials_${f.company}_${f.year}.xlsx);
+    }
+</script>
+<!-- ========================================== -->
+<!-- پایان اپلیکیشن حرفه‌ای حسابداری -->
+<!-- ========================================== -->
 </body>
 </html>
