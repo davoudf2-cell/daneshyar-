@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>اپلیکیشن حسابداری | دانشیار</title>
+
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/vazirmatn@33.0.3/Vazirmatn-font-face.css">
+
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Vazirmatn, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: #f4f7fb;
+      color: #172033;
+    }
+
+    header {
+      background: linear-gradient(135deg, #123c69, #1769aa);
+      color: white;
+      padding: 25px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+
+    header p {
+      margin: 8px 0 0;
+      opacity: .9;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .company-box {
+      background: white;
+      padding: 20px;
+      border-radius: 16px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,.06);
+    }
+
+    .company-box h2 {
+      margin-top: 0;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+    }
+
+    input, select, button {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #d7dce5;
+      font-size: 15px;
+    }
+
+    button {
+      cursor: pointer;
+      border: none;
+      background: #1769aa;
+      color: white;
+      font-weight: bold;
+    }
+
+    button:hover {
+      opacity: .9;
+    }
+
+    .menu {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .menu button {
+      background: white;
+      color: #123c69;
+      border: 1px solid #dfe5ee;
+      box-shadow: 0 3px 10px rgba(0,0,0,.05);
+    }
+
+    .menu button.active {
+      background: #1769aa;
+      color: white;
+    }
+
+    .section {
+      display: none;
+      background: white;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 4px 15px rgba(0,0,0,.06);
+      margin-bottom: 20px;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    .section h2 {
+      color: #123c69;
+      margin-top: 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+
+    th, td {
+      border: 1px solid #e0e4eb;
+      padding: 10px;
+      text-align: right;
+    }
+
+    th {
+      background: #eef4fa;
+      color: #123c69;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+    }
+
+    .card {
+      background: #f7faff;
+      border: 1px solid #e0e8f2;
+      padding: 18px;
+      border-radius: 14px;
+    }
+
+    .card h3 {
+      margin-top: 0;
+      font-size: 15px;
+      color: #52627a;
+    }
+
+    .card strong {
+      font-size: 22px;
+      color: #123c69;
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .btn-green {
+      background: #198754;
+    }
+
+    .btn-orange {
+      background: #e67e22;
+    }
+
+    .btn-red {
+      background: #c0392b;
+    }
+
+    .btn-dark {
+      background: #263238;
+    }
+
+    @media (max-width: 800px) {
+
+      .form-grid,
+      .cards,
+      .menu,
+      .actions {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      table {
+        font-size: 13px;
+      }
+    }
+
+    @media (max-width: 500px) {
+
+      .form-grid,
+      .cards,
+      .menu,
+      .actions {
+        grid-template-columns: 1fr;
+      }
+
+      header h1 {
+        font-size: 22px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>📊 اپلیکیشن حسابداری و تحلیل مالی</h1>
+  <p>بخشی از سامانه آموزشی دانشیار</p>
+</header>
+
+<div class="container">
+
+  <!-- اطلاعات شرکت -->
+  <div class="company-box">
+
+    <h2>⚙️ اطلاعات شرکت</h2>
+
+    <div class="form-grid">
+
+      <div>
+        <label>نام شرکت</label>
+        <input id="companyName"
+               type="text"
+               value="شرکت فرضی دانشیار">
+      </div>
+
+      <div>
+        <label>سال مالی</label>
+        <input id="fiscalYear"
+               type="text"
+               value="1405">
+      </div>
+
+      <div>
+        <label>واحد پول</label>
+        <select id="currency">
+          <option value="ریال">ریال</option>
+          <option value="تومان">تومان</option>
+        </select>
+      </div>
+
+    </div>
+
+    <div class="actions">
+
+      <button onclick="saveCompany()">
+        💾 ذخیره اطلاعات
+      </button>
+
+      <button class="btn-green"
+              onclick="exportExcel()">
+        📥 خروجی Excel
+      </button>
+
+      <button class="btn-orange"
+              onclick="document.getElementById('excelFile').click()">
+        📤 ورود Excel
+      </button>
+
+    </div>
+
+    <input id="excelFile"
+           type="file"
+           accept=".xlsx,.xls"
+           style="display:none"
+           onchange="importExcel(event)">
+
+  </div>
+
+
+  <!-- منوی اصلی -->
+
+  <div class="menu">
+
+    <button class="active"
+            onclick="showSection('dashboard', this)">
+      📊 داشبورد
+    </button>
+
+    <button onclick="showSection('rawData', this)">
+      📝 داده‌های خام
+    </button>
+
+    <button onclick="showSection('income', this)">
+      📈 سود و زیان
+    </button>
+
+    <button onclick="showSection('balance', this)">
+      ⚖️ ترازنامه
+    </button>
+
+    <button onclick="showSection('cashflow', this)">
+      💰 جریان وجوه نقد
+    </button>
+
+    <button onclick="showSection('equity', this)">
+      📋 حقوق مالکانه
+    </button>
+
+    <button onclick="showSection('ratios', this)">
+      📐 نسبت‌های مالی
+    </button>
+
+    <button onclick="showSection('liquidity', this)">
+      💧 تحلیل نقدینگی
+    </button>
+
+  </div>
+
+
+  <!-- داشبورد -->
+
+  <section id="dashboard"
+           class="section active">
+
+    <h2>📊 داشبورد مالی</h2>
+
+    <div class="cards">
+
+      <div class="card">
+        <h3>دارایی‌ها</h3>
+        <strong id="dashAssets">0</strong>
+      </div>
+
+      <div class="card">
+        <h3>بدهی‌ها</h3>
+        <strong id="dashLiabilities">0</strong>
+      </div>
+
+      <div class="card">
+        <h3>حقوق مالکانه</h3>
+        <strong id="dashEquity">0</strong>
+      </div>
+
+      <div class="card">
+        <h3>سود خالص</h3>
+        <strong id="dashProfit">0</strong>
+      </div>
+
+    </div>
+
+    <br>
+
+    <button onclick="calculateAll()">
+      🔄 محاسبه و به‌روزرسانی صورت‌های مالی
+    </button>
+
+  </section>
+
+
+  <!-- داده های خام -->
+
+  <section id="rawData"
+           class="section">
+
+    <h2>📝 داده‌های خام و تراکنش‌ها</h2>
+
+    <div class="form-grid">
+
+      <input id="date"
+             type="text"
+             placeholder="تاریخ">
+
+      <input id="description"
+             type="text"
+             placeholder="شرح تراکنش">
+
+      <input id="account"
+             type="text"
+             placeholder="حساب">
+
+      <input id="debit"
+             type="number"
+             placeholder="بدهکار">
+
+      <input id="credit"
+             type="number"
+             placeholder="بستانکار">
+
+      <button onclick="addTransaction()">
+        ➕ ثبت تراکنش
+      </button>
+
+    </div>
+
+    <table>
+
+      <thead>
+        <tr>
+          <th>ردیف</th>
+          <th>تاریخ</th>
+          <th>شرح</th>
+          <th>حساب</th>
+          <th>بدهکار</th>
+          <th>بستانکار</th>
+          <th>عملیات</th>
+        </tr>
+      </thead>
+
+      <tbody id="transactionTable">
+      </tbody>
+
+    </table>
+
+  </section>
+
+
+  <!-- سود و زیان -->
+
+  <section id="income"
+           class="section">
+
+    <h2>📈 صورت سود و زیان</h2>
+
+    <table>
+
+      <thead>
+        <tr>
+          <th>شرح</th>
+          <th>مبلغ</th>
+        </tr>
+      </thead>
+
+      <tbody id="incomeTable">
+      </tbody>
+
+    </table>
+
+  </section>
+
+
+  <!-- ترازنامه -->
+
+  <section id="balance"
+           class="section">
+
+    <h2>⚖️ ترازنامه</h2>
+
+    <table>
+
+      <thead>
+        <tr>
+          <th>شرح</th>
+          <th>مبلغ</th>
+        </tr>
+      </thead>
+
+      <tbody id="balanceTable">
+      </tbody>
+
+    </table>
+
+  </section>
+
+
+  <!-- جریان وجوه نقد -->
+
+  <section id="cashflow"
+           class="section">
+
+    <h2>💰 صورت جریان وجوه نقد</h2>
+
+    <table>
+
+      <thead>
+        <tr>
+          <th>فعالیت</th>
+          <th>مبلغ</th>
+        </tr>
+      </thead>
+
+      <tbody id="cashflowTable">
+      </tbody>
+
+    </table>
+
+  </section>
+
+
+  <!-- حقوق مالکانه -->
+
+  <section id="equity"
+           class="section">
+
+    <h2>📋 صورت تغییرات حقوق مالکانه</h2>
+
+    <table>
+
+      <thead>
+        <tr>
+          <th>شرح</th>
+          <th>مبلغ</th>
+        </tr>
+      </thead>
+
+      <tbody id="equityTable">
+      </tbody>
+
+    </table>
+
+  </section>
+
+
+  <!-- نسبت ها -->
+
+  <section id="ratios"
+           class="section">
+
+    <h2>📐 نسبت‌های مالی</h2>
+
+    <div class="cards">
+
+      <div class="card">
+        <h3>نسبت جاری</h3>
+        <strong id="currentRatio">0</strong>
+      </div>
+
+      <div class="card">
+        <h3>نسبت بدهی</h3>
+        <strong id="debtRatio">0%</strong>
+      </div>
+
+      <div class="card">
+        <h3>بازده دارایی</h3>
+        <strong id="roa">0%</strong>
+      </div>
+
+      <div class="card">
+        <h3>بازده حقوق مالکانه</h3>
+        <strong id="roe">0%</strong>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- نقدینگی -->
+
+  <section id="liquidity"
+           class="section">
+
+    <h2>💧 تحلیل نقدینگی</h2>
+
+    <div id="liquidityResult">
+
+      هنوز اطلاعاتی برای تحلیل وجود ندارد.
+
+    </div>
+
+  </section>
+
+</div>
+
+
+<script src="app.js"></script>
+
+</body>
+</html>
