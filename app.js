@@ -9,7 +9,6 @@ function openApp() {
 
 // تابع محاسبه و تولید صورت‌های مالی
 function calculateFinancials() {
-    // گرفتن مقادیر از فرم
     const company = document.getElementById('companyName').value || "شرکت فرضی";
     const year = document.getElementById('fiscalYear').value || "۱۴۰۲";
     
@@ -17,10 +16,7 @@ function calculateFinancials() {
     const currentLiabilities = parseFloat(document.getElementById('currentLiabilities').value) || 0;
     const netIncome = parseFloat(document.getElementById('netIncome').value) || 0;
 
-    // فرمت کردن اعداد به صورت سه رقم سه رقم (مثلاً ۵۰,۰۰۰,۰۰۰)
     const formatNum = (num) => num.toLocaleString('fa-IR');
-
-    // تولید خروجی HTML
     const resultsArea = document.getElementById('resultsArea');
     
     resultsArea.innerHTML = `
@@ -51,7 +47,7 @@ function calculateFinancials() {
             </tr>
             <tr>
                 <td style="padding: 10px; border: 1px solid #ddd;">نسبت‌های مالی</td>
-                <td style="padding: 10px; border: 1px solid #ddd;">نسبت جاری (دارایی جاری ÷ بدهی جاری)</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">نسبت جاری (دارایی ÷ بدهی)</td>
                 <td style="padding: 10px; border: 1px solid #ddd; direction: ltr; text-align: right;">${currentLiabilities ? (currentAssets / currentLiabilities).toFixed(2) : 'تعریف نشده'}</td>
             </tr>
         </table>
