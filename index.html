@@ -1,1 +1,78 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دانشیار | مرجع آموزش و ابزارهای هوشمند</title>
+    <!-- فونت زیبای وزیرمتن -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
+    <!-- هدر سایت -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <h1>دانشیار</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#home" class="active">صفحه اصلی</a></li>
+                    <li><a href="#accounting">حسابداری</a></li>
+                    <li><a href="#photography">عکاسی</a></li>
+                    <li><a href="#computer">کامپیوتر و برنامه‌نویسی</a></li>
+                    <li><a href="#business">کسب و کار</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- بخش معرفی -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h2>به دنیای دانش‌یار خوش آمدید</h2>
+            <p>آموزش‌های تخصصی و ابزارهای هوشمند برای رشد شما در حوزه‌های حسابداری، عکاسی، کامپیوتر و کسب و کار.</p>
+        </div>
+    </section>
+
+    <!-- بخش دسته‌بندی‌ها -->
+    <section class="categories">
+        <h2 class="section-title">دسته‌بندی‌های آموزشی</h2>
+        <div class="grid-container">
+            <div class="card">
+                <h3>حسابداری</h3>
+                <p>آموزش اصول، صورت‌های مالی و نرم‌افزارها</p>
+                <button onclick="openApp()">ورود به اپلیکیشن حسابداری</button>
+            </div>
+            <div class="card">
+                <h3>عکاسی</h3>
+                <p>تکنیک‌های عکاسی، نورپردازی و ویرایش</p>
+            </div>
+            <div class="card">
+                <h3>کامپیوتر و برنامه‌نویسی</h3>
+                <p>مهارت‌های ICDL و زبان‌های برنامه‌نویسی</p>
+            </div>
+            <div class="card">
+                <h3>کسب و کار</h3>
+                <p>مدیریت، بازاریابی و کارآفرینی</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- مکان اپلیکیشن حسابداری (فعلاً مخفی است) -->
+    <section id="accounting-app" style="display: none;">
+        <h2 class="section-title">اپلیکیشن تولید و تحلیل صورت‌های مالی</h2>
+        <div class="app-container">
+            <p>این بخش در حال ساخت است... (در گام‌های بعدی کدهای اپلیکیشن را اینجا می‌گذاریم)</p>
+        </div>
+    </section>
+
+    <!-- فوتر (پاورقی) -->
+    <footer>
+        <p>تمامی حقوق برای سایت آموزشی دانش‌یار محفوظ است. © 2024</p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
