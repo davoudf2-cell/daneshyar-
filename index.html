@@ -487,5 +487,357 @@
             XLSX.writeFile(wb, `Financials_${f.company}_${f.year}.xlsx`);
         }
     </script>
+<header>
+  <h1>📊 اپلیکیشن حسابداری و تحلیل مالی</h1>
+  <p>بخشی از سامانه آموزشی دانشیار</p>
+</header>
+
+<div class="container">
+
+  <!-- اطلاعات شرکت -->
+  <div class="company-box">
+
+    <h2>⚙️ اطلاعات شرکت</h2>
+
+    <div class="form-grid">
+
+      <div>
+        <label>نام شرکت</label>
+        <input id="companyName"
+               type="text"
+               value="شرکت فرضی دانشیار">
+      </div>
+
+      <div>
+        <label>سال مالی</label>
+        <input id="fiscalYear"
+               type="text"
+               value="1405">
+      </div>
+
+      <div>
+        <label>واحد پول</label>
+        <select id="currency">
+          <option value="ریال">ریال</option>
+          <option value="تومان">تومان</option>
+        </select>
+      </div>
+
+    </div>
+
+    <div class="actions">
+
+      <button onclick="saveCompany()">
+        💾 ذخیره اطلاعات
+      </button>
+
+      <button class="btn-green"
+              onclick="exportExcel()">
+        📥 خروجی Excel
+      </button>
+
+      <button class="btn-orange"
+              onclick="document.getElementById('excelFile').click()">
+        📤 ورود Excel
+      </button>
+
+    </div>
+
+    <input id="excelFile"
+           type="file"
+           accept=".xlsx,.xls"
+           style="display:none"
+           onchange="importExcel(event)">
+
+  </div>
+
+
+  <!-- منوی اصلی -->
+
+  <div class="menu">
+
+    <button class="active"
+            onclick="showSection('dashboard', this)">
+      📊 داشبورد
+    </button>
+
+    <button onclick="showSection('rawData', this)">
+      📝 داده‌های خام
+    </button>
+
+    <button onclick="showSection('income', this)">
+      📈 سود و زیان
+    </button>
+
+    <button onclick="showSection('balance', this)">
+      ⚖️ ترازنامه
+    </button>
+
+    <button onclick="showSection('cashflow', this)">
+      💰 جریان وجوه نقد
+    </button>
+
+    <button onclick="showSection('equity', this)">
+      📋 حقوق مالکانه
+    </button>
+
+    <button onclick="showSection('ratios', this)">
+      📐 نسبت‌های مالی
+    </button>
+
+    <button onclick="showSection('liquidity', this)">
+      💧 تحلیل نقدینگی
+    </button>
+
+  </div>
+
+
+  <!-- داشبورد -->
+
+  <section id="dashboard"
+           class="section active">
+
+    <h2>📊 داشبورد مالی</h2>
+
+    <div class="cards">
+
+      <div class="card">
+        <h3>دارایی‌ها</h3>
+        <strong id="dashAssets">0</strong>
+      </div>
+
+      <div class="card">
+        <h3>بدهی‌ها</h3>
+        <strong id="dashLiabilities">0</strong>
+      </div>
+
+      <div class="card">
+        <h3>حقوق مالکانه</h3>
+        <strong id="dashEquity">0</strong>
+      </div>
+
+      <div class="card">
+        <h3>سود خالص</h3>
+        <strong id="dashProfit">0</strong>
+      </div>
+
+    </div>
+
+    <br>
+
+    <button onclick="calculateAll()">
+      🔄 محاسبه و به‌روزرسانی صورت‌های مالی
+    </button>
+
+  </section>
+
+
+  <!-- داده های خام -->
+
+  <section id="rawData"
+           class="section">
+
+    <h2>📝 داده‌های خام و تراکنش‌ها</h2>
+
+    <div class="form-grid">
+
+      <input id="date"
+             type="text"
+             placeholder="تاریخ">
+
+      <input id="description"
+             type="text"
+             placeholder="شرح تراکنش">
+
+      <input id="account"
+             type="text"
+             placeholder="حساب">
+
+      <input id="debit"
+             type="number"
+             placeholder="بدهکار">
+
+      <input id="credit"
+             type="number"
+             placeholder="بستانکار">
+
+      <button onclick="addTransaction()">
+        ➕ ثبت تراکنش
+      </button>
+
+    </div>
+
+    <table>
+
+      <thead>
+        <tr>
+          <th>ردیف</th>
+          <th>تاریخ</th>
+          <th>شرح</th>
+          <th>حساب</th>
+          <th>بدهکار</th>
+          <th>بستانکار</th>
+          <th>عملیات</th>
+        </tr>
+      </thead>
+
+      <tbody id="transactionTable">
+      </tbody>
+
+    </table>
+
+  </section>
+
+
+  <!-- سود و زیان -->
+
+  <section id="income"
+           class="section">
+
+    <h2>📈 صورت سود و زیان</h2>
+
+    <table>
+
+      <thead>
+        <tr>
+          <th>شرح</th>
+          <th>مبلغ</th>
+        </tr>
+      </thead>
+
+      <tbody id="incomeTable">
+      </tbody>
+
+    </table>
+
+  </section>
+
+
+  <!-- ترازنامه -->
+
+  <section id="balance"
+           class="section">
+
+    <h2>⚖️ ترازنامه</h2>
+
+    <table>
+
+      <thead>
+        <tr>
+          <th>شرح</th>
+          <th>مبلغ</th>
+        </tr>
+      </thead>
+
+      <tbody id="balanceTable">
+      </tbody>
+
+    </table>
+
+  </section>
+
+
+  <!-- جریان وجوه نقد -->
+
+  <section id="cashflow"
+           class="section">
+
+    <h2>💰 صورت جریان وجوه نقد</h2>
+
+    <table>
+
+      <thead>
+        <tr>
+          <th>فعالیت</th>
+          <th>مبلغ</th>
+        </tr>
+      </thead>
+
+      <tbody id="cashflowTable">
+      </tbody>
+
+    </table>
+
+  </section>
+
+
+  <!-- حقوق مالکانه -->
+
+  <section id="equity"
+           class="section">
+
+    <h2>📋 صورت تغییرات حقوق مالکانه</h2>
+
+    <table>
+
+      <thead>
+        <tr>
+          <th>شرح</th>
+          <th>مبلغ</th>
+        </tr>
+      </thead>
+
+      <tbody id="equityTable">
+      </tbody>
+
+    </table>
+
+  </section>
+
+
+  <!-- نسبت ها -->
+
+  <section id="ratios"
+           class="section">
+
+    <h2>📐 نسبت‌های مالی</h2>
+
+    <div class="cards">
+
+      <div class="card">
+        <h3>نسبت جاری</h3>
+        <strong id="currentRatio">0</strong>
+      </div>
+
+      <div class="card">
+        <h3>نسبت بدهی</h3>
+        <strong id="debtRatio">0%</strong>
+      </div>
+
+      <div class="card">
+        <h3>بازده دارایی</h3>
+        <strong id="roa">0%</strong>
+      </div>
+
+      <div class="card">
+        <h3>بازده حقوق مالکانه</h3>
+        <strong id="roe">0%</strong>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- نقدینگی -->
+
+  <section id="liquidity"
+           class="section">
+
+    <h2>💧 تحلیل نقدینگی</h2>
+
+    <div id="liquidityResult">
+
+      هنوز اطلاعاتی برای تحلیل وجود ندارد.
+
+    </div>
+
+  </section>
+
+</div>
+
+
+<script src="app.js"></script>
+
 </body>
 </html>
