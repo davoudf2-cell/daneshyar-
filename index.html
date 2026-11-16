@@ -64,7 +64,43 @@
     <section id="accounting-app" style="display: none;">
         <h2 class="section-title">اپلیکیشن تولید و تحلیل صورت‌های مالی</h2>
         <div class="app-container">
-            <p>این بخش در حال ساخت است... (در گام‌های بعدی کدهای اپلیکیشن را اینجا می‌گذاریم)</p>
+            <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+    <h2 style="color: #2c3e50; margin-bottom: 20px; text-align: center;">فرم ورود اطلاعات شرکت</h2>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+        <div>
+            <label style="display: block; margin-bottom: 5px;">نام شرکت:</label>
+            <input type="text" id="companyName" placeholder="مثال: شرکت نمونه" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+        </div>
+        <div>
+            <label style="display: block; margin-bottom: 5px;">سال مالی:</label>
+            <input type="text" id="fiscalYear" placeholder="مثال: ۱۴۰۲" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+        </div>
+    </div>
+
+    <h3 style="color: #3498db; margin-bottom: 10px;">اطلاعات پایه (جهت تست)</h3>
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px;">
+        <div>
+            <label style="display: block; margin-bottom: 5px;">دارایی جاری:</label>
+            <input type="number" id="currentAssets" value="50000000" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+        </div>
+        <div>
+            <label style="display: block; margin-bottom: 5px;">بدهی جاری:</label>
+            <input type="number" id="currentLiabilities" value="20000000" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+        </div>
+        <div>
+            <label style="display: block; margin-bottom: 5px;">سود خالص:</label>
+            <input type="number" id="netIncome" value="15000000" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+        </div>
+    </div>
+
+    <button onclick="calculateFinancials()" style="background-color: #27ae60; color: white; border: none; padding: 12px 25px; border-radius: 5px; cursor: pointer; font-size: 16px; width: 100%; font-family: 'Vazirmatn', sans-serif;">
+        محاسبه و تولید صورت‌های مالی
+    </button>
+
+    <!-- اینجا نتیجه نمایش داده می‌شود -->
+    <div id="resultsArea" style="margin-top: 20px;"></div>
+</div>
         </div>
     </section>
 
