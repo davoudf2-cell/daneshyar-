@@ -55,3 +55,56 @@ function calculateFinancials() {
         <p style="color: #e67e22; font-weight: bold;">⚠️ توجه: این نسخه آزمایشی است و در گام‌های بعدی، جدول‌های کامل و خروجی اکسل به آن اضافه می‌شود.</p>
     `;
 }
+// تابع تولید و دانلود فایل اکسل
+function exportToExcel() {
+    const company = document.getElementById('companyName').value || "شرکت فرضی";
+    const year = document.getElementById('fiscalYear').value || "۱۴۰۲";
+    const currentAssets = parseFloat(document.getElementById('currentAssets').value) || 0;
+    const currentLiabilities = parseFloat(document.getElementById('currentLiabilities').value) || 0;
+    const netIncome = parseFloat(document.getElementById('netIncome').value) || 0;
+
+    const operatingCashFlow = netIncome + (currentLiabilities - currentAssets);
+
+    const rawData = [
+        ["نام شرکت", company],
+        ["سال مالی", year],
+        ["دارایی جاری", currentAssets],
+        ["بدهی جاری", currentLiabilities],
+        ["سود خالص", netIncome]
+    ];
+
+    const cashFlowData = [
+        ["شرح", "مبلغ (ریال)"],
+        ["جریان نقدی عملیاتی", operatingCashFlow],
+        ["جریان نقدی سرمایه‌گذاری", 0],
+        ["جریان نقدی تامین مالی", 0],
+        ["خالص افزایش/کاهش نقد", operatingCashFlow]
+    ];
+
+    const wb = XLSX.utils.book_new();
+    const wsRaw = XLSX.utils.aoa_to_sheet(rawData);
+    const wsCashFlow = XLSX.utils.aoa_to_sheet(cashFlowData);
+
+    XLSX.utils.book_append_sheet(wb, wsRaw, "داده های خام");
+    XLSX.utils.book_append_sheet(wb, wsCashFlow, "جریان وجوه نقد");
+
+    XLSX.writeFile(wb, `گزارش_${company}_${year}.xlsx`);
+    
+    const resultsArea = document.getElementById('resultsArea');
+    const cashFlowHTML = `
+        <table style="width: 100%; border-collapse: collapse; margin-top: 20px; background: white;">
+            <tr style="background: #34495e; color: white;">
+                <th style="padding: 10px; border: 1px solid #ddd;" colspan="2">صورت جریان وجوه نقد (خلاصه)</th>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd;">جریان نقدی عملیاتی</td>
+                <td style="padding: 10px; border: 1px solid #ddd; direction: ltr; text-align: right;">${operatingCashFlow.toLocaleString('fa-IR')}</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd;">خالص افزایش/کاهش نقد</td>
+                <td style="padding: 10px; border: 1px solid #ddd; direction: ltr; text-align: right;">${operatingCashFlow.toLocaleString('fa-IR')}</td>
+            </tr>
+        </table>
+    `;
+    resultsArea.innerHTML += cashFlowHTML;
+                    }
